@@ -1,7 +1,8 @@
 import glob
 import os
 from pydub import AudioSegment
-os.chdir("/home/abhishek/Desktop/S7/project/Code")
+dir = os.getcwd()
+os.chdir(dir)
 crack = 0
 wheeze = 0
 normal = 0
