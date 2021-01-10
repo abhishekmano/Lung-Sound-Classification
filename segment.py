@@ -7,11 +7,18 @@ crack = 0
 wheeze = 0
 normal = 0
 count = 0
+sample_count = 0
 for file in glob.glob("*.txt"):  # select all text file
     print(file)
+    print(sample_count)
+    sample_count += 1
     length = len(file)
     filename = file[:length-4]
     aud_filename = filename+".wav"  # audio file name is saved
+    split = filename.split("_")
+    channel = split[3]
+    if(channel == "mc"):
+        continue
     print(aud_filename)
     try:
         f = open(file)
