@@ -57,7 +57,7 @@ def read_wav_file(str_filename, target_rate):
     #filename = "101_1b1_Pr_sc_Meditron.wav"
     wav = wave.open(str_filename, mode='r')
     (sample_rate, data) = extract2FloatArr(wav, str_filename)
-    print(sample_rate)
+    #print(sample_rate)                     #printing the sample rate
     if (sample_rate != target_rate):
         (_, data) = resample(sample_rate, data, target_rate)
 
