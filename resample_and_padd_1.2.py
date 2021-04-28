@@ -1,3 +1,4 @@
+# python code which pad each signal and save as seperate signal of constant length
 from os import POSIX_FADV_DONTNEED
 import librosa
 import wave
@@ -72,62 +73,74 @@ def read_wav_file(str_filename, target_rate):
 
 case = 0
 for file in glob.glob("*.wav"):
-    sr, X = read_wav_file(file, 22000)
+    X, sr = librosa.load(file, sr=22000)
     #print('sampling rate is:', sr)
-    print('wav is :', X)
+    #print('wav is :', X)
     #print("length of wav is", len(X))
     #print(type(X), type(sr))
     #print(X.shape, sr)
+    print(file)
     length = len(X)
     total = 22000 * 6  # constant size we needed 6s
-    if(length < total):
+    f_length = len(file)
+    filename = file[:f_length-4]
+    filename = './NCrack/' + filename
+    if(length <= total):
         pad_length = total - length
-        paded_array = np.pad(X, (pad_length, 0), mode='wrap')
-        print("new length is ", len(paded_array))
+        paded_array = np.pad(X, (0, pad_length), mode='wrap')
+        print("Size:", len(paded_array))
+        scipy.io.wavfile.write(filename + 'a.wav', 22000, paded_array)
     else:
         #not decided
         paded_array = X[0:total]
         cycles_num = length / total
-        print("Number of cycles present=", cycles_num)
-        if(length/total >= 2):  # length > 12s
+        #print("Number of cycles present=", cycles_num)
+        if(length/total > 2):  # length > 12s
             case = 2
             paded_array2 = X[total:total+total]
             print("Found one with higher > 12s")
             paded_array3 = X[2*total:]
             pad_length = total - len(paded_array3)
             paded_array3 = np.pad(paded_array3, (0, pad_length), mode='wrap')
-            print("lengths are ", len(paded_array),
+            scipy.io.wavfile.write(filename + 'a.wav', 22000, paded_array)
+            scipy.io.wavfile.write(filename + 'b.wav', 22000, paded_array2)
+            scipy.io.wavfile.write(filename + 'c.wav', 22000, paded_array3)
+            print("Size are:", len(paded_array),
                   len(paded_array2), len(paded_array3))
         else:  # length < 12s but > 6s
             case = 1
             paded_array2 = X[total:]
             pad_length = total - (length - total)
             paded_array2 = np.pad(paded_array2, (0, pad_length), mode='wrap')
-            print("lengths are ", len(paded_array), len(paded_array2))
+            print("Size are:", len(paded_array), len(paded_array2))
+            scipy.io.wavfile.write(filename + 'a.wav', 22000, paded_array)
+            scipy.io.wavfile.write(filename + 'b.wav', 22000, paded_array2)
 
-    plt.figure(figsize=(14, 5))
-    plt.title("Original")
-    librosa.display.waveplot(X, sr=sr)    # Code to display the original
-    plt.show()
+    print("*"*20)
 
-    plt.figure(figsize=(14, 9))
-    plt.subplot(311)
-    plt.title("Padded")
-    librosa.display.waveplot(paded_array, sr=sr)    # Code to display the wave
-    if(case == 1 or case == 2):
-        plt.subplot(312)
-        plt.title("Padded 2 ")
-        # Code to display the wave
-        librosa.display.waveplot(paded_array2, sr=sr)
+    # plt.figure(figsize=(14, 5))
+    # plt.title("Original")
+    # librosa.display.waveplot(X, sr=sr)    # Code to display the original
+    # plt.show()
 
-    if(case == 2):
-        plt.subplot(313)
-        plt.title("Padded 3")
-        # Code to display the wave
-        librosa.display.waveplot(paded_array3, sr=sr)
+    # plt.figure(figsize=(14, 9))
+    # plt.subplot(311)
+    # plt.title("Padded")
+    # librosa.display.waveplot(paded_array, sr=sr)    # Code to display the wave
+    # if(case == 1 or case == 2):
+    #     plt.subplot(312)
+    #     plt.title("Padded 2 ")
+    #     # Code to display the wave
+    #     librosa.display.waveplot(paded_array2, sr=sr)
 
-    plt.show()
-    scipy.io.wavfile.write('new.wav', 22000, X.astype(np.int16))
+    # if(case == 2):
+    #     plt.subplot(313)
+    #     plt.title("Padded 3")
+    #     # Code to display the wave
+    #     librosa.display.waveplot(paded_array3, sr=sr)
+
+    # plt.show()
+    #scipy.io.wavfile.write('new.wav', 22000, paded_array)
 
     # mfccs = librosa.feature.mfcc(y=paded_array, sr=sr, n_mfcc=40)
     # fig, ax = plt.subplots()

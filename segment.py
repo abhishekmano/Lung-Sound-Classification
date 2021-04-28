@@ -1,3 +1,4 @@
+# python code to segment the audido signal into wheeze crack and normal andcopy to folders
 import glob
 import os
 from pydub import AudioSegment
@@ -45,11 +46,11 @@ for file in glob.glob("*.txt"):  # select all text file
                 newAudio.export('Normal/'+new_name, format="wav")
             elif(data[2] == '1'):
                 crack += 1
-                new_name = 'crack' + str(crack) + '_' + new_name
+                new_name = 'crack_' + str(crack) + '_' + new_name
                 newAudio.export('Crack/'+new_name, format="wav")
             else:
                 wheeze += 1
-                new_name = 'wheeze' + str(wheeze) + '_' + new_name
+                new_name = 'wheeze_' + str(wheeze) + '_' + new_name
                 newAudio.export('Wheeze/'+new_name, format="wav")
     finally:
         f.close()
