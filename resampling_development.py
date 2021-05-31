@@ -127,7 +127,7 @@ for file in glob.glob("*.wav"):
         librosa.display.waveplot(paded_array3, sr=sr)
 
     plt.show()
-    scipy.io.wavfile.write('new.wav', 22000, X.astype(np.int16))
+    #scipy.io.wavfile.write('new.wav', 22000, X.astype(np.int16))
 
     # mfccs = librosa.feature.mfcc(y=paded_array, sr=sr, n_mfcc=40)
     # fig, ax = plt.subplots()
