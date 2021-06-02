@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success!</title>
+</head>
+<body>
+    
+    <div id="audio-spectrum"></div>
+
+    <input type="button" id="btn-play" value="Play" disabled="disabled"/>
+    <input type="button" id="btn-pause" value="Pause" disabled="disabled"/>
+    <input type="button" id="btn-stop" value="Stop" disabled="disabled"/>
+
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+
+    <script>
+
+        var file = '{{ filename }}';
+
+        var buttons = {
+            play: document.getElementById("btn-play"),
+            pause: document.getElementById("btn-pause"),
+            stop: document.getElementById("btn-stop")
+        };
+
+
+        //instance of wavesurfer with its configuration
+
+        var Spectrum = WaveSurfer.create({
+            container: '#audio-spectrum',
+            progressColor : "#03a9f4"
+        });
+
+        //handling play button
+        buttons.play.addEventListener("click", function(){
+            Spectrum.play();
+
+            buttons.play.disabled = true;
+            buttons.stop.disabled = false;
+            buttons.pause.disabled = false;
+        }, false);
+
+        buttons.pause.addEventListener("click", function(){
+            Spectrum.pause();
+
+            buttons.play.disabled = false;
+            buttons.pause.disabled = true;
+        }, false);
+
+        buttons.stop.addEventListener("click", function(){
+            Spectrum.stop();
+
+            buttons.play.disabled = false;
+            buttons.stop.disabled = true;
+            buttons.pause.disabled = true;
+        }, false);
+    
+        //adding listener to enable play button
+
+        Spectrum.on('ready', function(){
+            buttons.play.disabled = false;
+        });
+
+        Spectrum.load('../static/uploads/' + file );
+
+</script>
+
+
+<div style="padding-top: 20px">
+    <form method="back">
+
+        <input type = "submit" value="Back"/>
+    </form>
+</div>
+
+</body>
+</html>

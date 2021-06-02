@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project</title>
+</head>
+<body>
+    <label for="fileUpload">Upload an audio file: </label><br><br>
+    <form method="post" enctype="multipart/form-data">
+        <input type = "file" name = "file" />
+        <input type = "submit"/>
+    </form>
+
+    <script>
+        //to log the file name:
+
+        function readFile(files) {
+            var fileReader = new FileReader();
+                fileReader.readAsArrayBuffer(files[0]);
+                fileReader.onload = function(e) {
+                    console.log(("Filename: '" + files[0].name + "'"), ( "(" + ((Math.floor(files[0].size/1024/1024*100))/100) + " MB)" ));
+                }
+        }
+        
+        //to move the file to ./upload/
+        
+        
+    </script>
+    
+</body>
+</html>
