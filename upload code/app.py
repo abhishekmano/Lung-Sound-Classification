@@ -1,5 +1,6 @@
 import json
 import os
+import loadmodel
 
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
@@ -28,6 +29,8 @@ def upload_file():
 
       # save the file to directory  
       f.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+
+      loadmodel(filename) #run loadmodel.py
 
       return render_template('uploaded.html', filename=filename) 
 
