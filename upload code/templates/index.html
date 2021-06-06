@@ -18,9 +18,9 @@
     <div id="sec5" class="container"> 
         <p style="font-family: 'Roboto';">Select audio length: </p>
         <div class="tab">
-            <button class="tablinks" onclick="dumpLength(event, 'fiveless')"><5 seconds</button>
-            <button class="tablinks" onclick="dumpLength(event, 'five')">5 seconds</button>
-            <button class="tablinks" onclick="dumpLength(event, 'fivegreat')">>5 seconds</button>
+            <button class="tablinks" onclick="dumpLength(event, 'fiveless')" ><5 seconds</button>
+            <button class="tablinks" onclick="dumpLength(event, 'five')" >5 seconds</button>
+            <button class="tablinks" onclick="dumpLength(event, 'fivegreat')" >>5 seconds</button>
           </div>
 
           <br><br><br>
@@ -28,7 +28,8 @@
     </div>
 
     <div class="upload-tab">
-        <form method="post" enctype="multipart/form-data" style="display: flex; justify-content: center;">
+        <form id="upload" method="post" enctype="multipart/form-data" style="display: flex; justify-content: center;">
+
             <input type = "file" name = "file" id="file" hidden/>
             <label id="choose" for="file"> Choose a lung sound </label> <br><br>
 
@@ -38,8 +39,8 @@
 
     <script>
 
-
         function dumpLength(evt, audioLength) {
+            
             var i, tablinks;
             tablinks = document.getElementsByClassName("tablinks");
             for (i = 0; i < tablinks.length; i++) {
@@ -51,7 +52,26 @@
             const myObj = {length : audioLength};
             const myJSON = JSON.stringify(myObj);  
             console.log(myJSON);
+
+            const hidden_ip = document.getElementById("upload");
+            console.log(hidden_ip);
+            let file_len = hidden_ip.getElementsByClassName("hidden_field");
             
+            if(file_len.length === 0){
+
+                    file_len = document.createElement("input");
+                    file_len.setAttribute("hidden", true);
+                    file_len.setAttribute("value", audioLength);
+                    file_len.setAttribute("name", "audio_len");
+                    file_len.setAttribute("class", "hidden_field");
+
+                    hidden_ip.appendChild(file_len);
+            } 
+
+            else{
+                file_len[0].setAttribute("value", audioLength);
+            }
+          
 
         }
         
