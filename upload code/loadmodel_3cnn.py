@@ -13,7 +13,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-def loadmodel(filename):
+def loadmodel_3cnn(filename):
 
     torch.backends.cudnn.benchmark = True
 
@@ -64,7 +64,7 @@ def loadmodel(filename):
             self.bn4 = nn.BatchNorm1d(128)
             self.pool4 = nn.MaxPool1d(3)
             # self.avgPool = nn.AvgPool1d(25)  # input should be 512x30 so this outputs a 512x1
-            self.fc1 = nn.Linear(128, 2)
+            self.fc1 = nn.Linear(128, 3)
 
         def forward(self, x):
             x = self.conv1(x)
@@ -93,7 +93,7 @@ def loadmodel(filename):
             return "Very High"
 
     def predict_out():
-        model_path = 'savedmodels/cnn_2class.pt'
+        model_path = 'savedmodels/cnn_3class.pt'
         audio_cnn = NetM3()
         audio_cnn.load_state_dict(torch.load(
             model_path, map_location=torch.device('cpu')))
@@ -104,7 +104,7 @@ def loadmodel(filename):
                 path, normalize=True)  # [ 1 , 193 ]
         except RuntimeError:
             print("Couldnt open file")
-            return "101", "Error", [0, 0]
+            return "101", "Error", [0, 0, 0]
         feature = feature_extract(audio_tensor, sample_rate)
         with torch.no_grad():
             audio_tensor = feature  # [1 , 193]
@@ -112,19 +112,20 @@ def loadmodel(filename):
             audio_tensor = torch.unsqueeze(audio_tensor, 0)  # [1,1,193]
             output = audio_cnn(audio_tensor)  # [1,1,2]
             output = output.permute(1, 0, 2)[0]  # [1,2]
-            # print(output)
+            #print("model output:", output)
 
             softmax = nn.Softmax(dim=1)
             res = softmax(output)
-            # print(res)
+            #print("Softmax", res)
 
-            z = res.squeeze(0).numpy()
+            z = res.squeeze(0).numpy() * 100
             z = [round(elem, 2)for elem in z]
+            # print(z)
 
             pred = output.max(1, keepdim=True)[1]
             pred = pred.squeeze(0).squeeze(0).item()
 
-            x_group = ["Abnormal", "Normal"]
+            x_group = ["Crack", "Normal", "Wheeze"]
             x = x_group[pred]
             y = consistency(res[0][pred])
             #print("predicted:", pred)
@@ -137,19 +138,13 @@ def loadmodel(filename):
 
 
 # for running only comment out when on web
-loadmodel("crack_1.wav")
-loadmodel("crack_2.wav")
-loadmodel("crack_3.wav")
-loadmodel("crack_4.wav")
-loadmodel("crack_5.wav")
-loadmodel("crack_6.wav")
-loadmodel("crack_7.wav")
-loadmodel("crack_8.wav")
-loadmodel("crack_9.wav")
-loadmodel("crack_10.wav")
-
-# loadmodel("wheeze1.wav")
-# loadmodel("wheeze2.wav")
-# loadmodel("wheeze3.wav")
-# loadmodel("wheeze4.wav")
-# loadmodel("wheeze5.wav")
+loadmodel_3cnn("crack_1.wav")
+loadmodel_3cnn("crack_2.wav")
+loadmodel_3cnn("crack_3.wav")
+loadmodel_3cnn("crack_4.wav")
+loadmodel_3cnn("crack_5.wav")
+loadmodel_3cnn("crack_6.wav")
+loadmodel_3cnn("crack_7.wav")
+loadmodel_3cnn("crack_8.wav")
+loadmodel_3cnn("crack_9.wav")
+loadmodel_3cnn("crack_10.wav")
