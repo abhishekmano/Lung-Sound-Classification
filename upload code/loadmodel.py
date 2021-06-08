@@ -93,18 +93,20 @@ def loadmodel(filename):
             return "Very High"
 
     def predict_out():
-        model_path = 'savedmodels/cnn_2class.pt'
+        # model_path = 'savedmodels/cnn_2class.pt'               #initial model
+        model_path = 'savedmodels/best_model_cnn_2class.pt'
         audio_cnn = NetM3()
         audio_cnn.load_state_dict(torch.load(
             model_path, map_location=torch.device('cpu')))
 
         path = "./static/uploads/" + filename
+        print("Going to Process: ", filename)
         try:
             audio_tensor, sample_rate = torchaudio.load(
                 path, normalize=True)  # [ 1 , 193 ]
         except RuntimeError:
             print("Couldnt open file")
-            return "101", "Error", [0, 0]
+            return "101", "Error", 0
         feature = feature_extract(audio_tensor, sample_rate)
         with torch.no_grad():
             audio_tensor = feature  # [1 , 193]
@@ -127,6 +129,7 @@ def loadmodel(filename):
             x_group = ["Abnormal", "Normal"]
             x = x_group[pred]
             y = consistency(res[0][pred])
+            z = round(res[0][pred].item()*100, 2)
             #print("predicted:", pred)
 
             return x, y, z
@@ -137,16 +140,16 @@ def loadmodel(filename):
 
 
 # for running only comment out when on web
-loadmodel("crack_1.wav")
-loadmodel("crack_2.wav")
-loadmodel("crack_3.wav")
-loadmodel("crack_4.wav")
-loadmodel("crack_5.wav")
-loadmodel("crack_6.wav")
-loadmodel("crack_7.wav")
-loadmodel("crack_8.wav")
-loadmodel("crack_9.wav")
-loadmodel("crack_10.wav")
+# loadmodel("crack_1.wav")
+# loadmodel("crack_2.wav")
+# loadmodel("crack_3.wav")
+# loadmodel("crack_4.wav")
+# loadmodel("crack_5.wav")
+# loadmodel("crack_6.wav")
+# loadmodel("crack_7.wav")
+# loadmodel("crack_8.wav")
+# loadmodel("crack_9.wav")
+# loadmodel("crack_10.wav")
 
 # loadmodel("wheeze1.wav")
 # loadmodel("wheeze2.wav")

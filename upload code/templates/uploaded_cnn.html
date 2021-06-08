@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='circle.css') }}">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success!</title>
+</head>
+<body>
+    
+    <div id="audio-spectrum" style="margin: 30px;"></div>
+
+    <div class="buttons">
+
+        <button class="control" id="btn-play" onclick="controlFucntion(1)" disabled>Play</button>
+        <button class="control" id="btn-pause" onclick="controlFucntion(0)" disabled>Pause</button>
+        <button class="control" id="btn-stop" onclick="controlFucntion(-1)" disabled>Stop</button>
+
+    </div>
+
+
+    <p style="text-align: center;">Prediction Results</p>
+    <div class="flex-wrapper">
+        <div class="single-chart">
+          <svg viewBox="0 0 36 36" class="circular-chart orange">
+            <path class="circle-bg"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path class="circle"
+              stroke-dasharray="{{crack}}, 100"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text x="18" y="20.35" class="percentage">{{ crack }}%</text>
+          </svg>
+
+          <p style="text-align: center; font-family: Arial, Helvetica, sans-serif;">Crack</p>
+          <!-- <p style="text-align: center; font-family: Arial, Helvetica, sans-serif;">{{confidence}}</p> -->
+
+        </div>
+        
+        <div class="single-chart">
+          <svg viewBox="0 0 36 36" class="circular-chart green">
+            <path class="circle-bg"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path class="circle"
+              stroke-dasharray="{{normal}}, 100"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text x="18" y="20.35" class="percentage">{{normal}}%</text>
+          </svg>
+          <p style="text-align: center; font-family: Arial, Helvetica, sans-serif;">Normal</p>
+        </div>
+      
+        <div class="single-chart">
+          <svg viewBox="0 0 36 36" class="circular-chart green">
+            <path class="circle-bg"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path class="circle"
+              stroke-dasharray="{{wheeze}}, 100"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text x="18" y="20.35" class="percentage">{{wheeze}}%</text>
+          </svg>
+          <p style="text-align: center; font-family: Arial, Helvetica, sans-serif;">Wheeze</p>
+        </div>
+    
+
+    </div> 
+
+    <p style="text-align: center; font-family: Arial, Helvetica, sans-serif;">Audio was predicted to be: {{prediction}}</p>
+
+    <div id="back" class="buttons">
+        <form method="back" style="padding-top: 20px;">
+            <button class="goback" type = "submit">Try another Audio </button>
+        </form>
+    </div>
+
+
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <script>
+
+        var crack = '{{crack}}';
+        var normal = '{{normal}}'
+        var wheeze = '{{wheeze}}'
+        var confidence = '{{confidence}}'
+        var prediction = '{{prediction}}'
+
+
+        // let normal_per = document.getElementById("normal");
+        // normal_per.setAttribute("style", "--radius : " + per_val + "deg;");
+
+        var Spectrum = WaveSurfer.create({
+            container: '#audio-spectrum',
+            progressColor : "#03a9f4"
+        });
+
+        var file = '{{ filename }}';
+        console.log(file);
+
+        let play = document.getElementById("btn-play");
+        let pause = document.getElementById("btn-pause");
+        let stop = document.getElementById("btn-stop");
+      
+
+        function controlFucntion( val){
+            if(val == 1){
+                Spectrum.play();
+
+                play.disabled = true;
+                pause.disabled = false;
+                stop.disabled = false;
+            } 
+            else if ( val == 0){
+                Spectrum.pause();
+
+                play.disabled = false;
+                pause.disabled = true;
+                stop.disabled = false;
+            }
+
+            else {
+                Spectrum.stop();
+
+                play.disabled = false;
+                pause.disabled = false;
+                stop.disabled = true;
+            }
+
+        }
+
+        Spectrum.on('ready', function(){
+            play.disabled = false;
+        });
+
+        Spectrum.load('../static/uploads/' + file );
+
+        //percentage circle code:
+
+</script>
+
+</body>
+</html>

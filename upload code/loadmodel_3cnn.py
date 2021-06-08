@@ -119,8 +119,8 @@ def loadmodel_3cnn(filename):
             #print("Softmax", res)
 
             z = res.squeeze(0).numpy() * 100
-            z = [round(elem, 2)for elem in z]
-            # print(z)
+            z = [round(elem, 2)for elem in z]  # percentage of each class
+            print(z)
 
             pred = output.max(1, keepdim=True)[1]
             pred = pred.squeeze(0).squeeze(0).item()
@@ -138,13 +138,13 @@ def loadmodel_3cnn(filename):
 
 
 # for running only comment out when on web
-loadmodel_3cnn("crack_1.wav")
-loadmodel_3cnn("crack_2.wav")
-loadmodel_3cnn("crack_3.wav")
-loadmodel_3cnn("crack_4.wav")
-loadmodel_3cnn("crack_5.wav")
-loadmodel_3cnn("crack_6.wav")
-loadmodel_3cnn("crack_7.wav")
-loadmodel_3cnn("crack_8.wav")
-loadmodel_3cnn("crack_9.wav")
-loadmodel_3cnn("crack_10.wav")
+# loadmodel_3cnn("crack_1.wav")
+# loadmodel_3cnn("crack_2.wav")
+# loadmodel_3cnn("crack_3.wav")
+# loadmodel_3cnn("crack_4.wav")
+# loadmodel_3cnn("crack_5.wav")
+# loadmodel_3cnn("crack_6.wav")
+# loadmodel_3cnn("crack_7.wav")
+# loadmodel_3cnn("crack_8.wav")
+# loadmodel_3cnn("crack_9.wav")
+# loadmodel_3cnn("crack_10.wav")

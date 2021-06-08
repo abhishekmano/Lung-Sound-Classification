@@ -10,17 +10,20 @@
 <body>
 
     <h1> Lung sound classification</h1>
-    <p style="font-family:Roboto; text-align: center; font-size: 18px; margin-top: -15px; margin-bottom: 60px;"> using Semi and Unsupervised methods</p>
+    <p style="font-family:Roboto; text-align: center; font-size: 18px; margin-top: -15px; margin-bottom: 60px;"> using Supervised, Semi-supervised and Unsupervised methods</p>
 
 
     <!-- For 5 sec audio  -->
 
     <div id="sec5" class="container"> 
-        <p style="font-family: 'Roboto';">Select audio length: </p>
+        <p style="font-family: 'Roboto';">Select Model: </p>
         <div class="tab">
-            <button class="tablinks" onclick="dumpLength(event, 'fiveless')" ><5 seconds</button>
-            <button class="tablinks" onclick="dumpLength(event, 'five')" >5 seconds</button>
-            <button class="tablinks" onclick="dumpLength(event, 'fivegreat')" >>5 seconds</button>
+            <button class="tablinks" onclick="dumpLength(event, 'CNN2')" > CNN 2-Class </button>
+            <button class="tablinks" onclick="dumpLength(event, 'CNN3')" > CNN 3-Class   </button>
+            <button class="tablinks" onclick="dumpLength(event, 'GAN2')" > GAN 2-Class  </button>
+            <button class="tablinks" onclick="dumpLength(event, 'GAN3')" > GAN 3-Class  </button>
+            <button class="tablinks" onclick="dumpLength(event, 'SVM')" > SVM  </button>
+
           </div>
 
           <br><br><br>
@@ -35,13 +38,13 @@
 
             <button class="button" type = "submit"> Upload </button>
 
-            <input type="text" name="per_val">
+            <!-- <input type="text" name="per_val"> -->
         </form>
     </div>
 
     <script>
 
-        function dumpLength(evt, audioLength) {
+        function dumpLength(evt, modelName) {
             
             var i, tablinks;
             tablinks = document.getElementsByClassName("tablinks");
@@ -51,7 +54,7 @@
 
             evt.currentTarget.className += " active";
 
-            const myObj = {length : audioLength};
+            const myObj = {ModelName : modelName};
             const myJSON = JSON.stringify(myObj);  
             console.log(myJSON);
 
@@ -63,15 +66,15 @@
 
                     file_len = document.createElement("input");
                     file_len.setAttribute("hidden", true);
-                    file_len.setAttribute("value", audioLength);
-                    file_len.setAttribute("name", "audio_len");
+                    file_len.setAttribute("value", modelName);
+                    file_len.setAttribute("name", "model_name");
                     file_len.setAttribute("class", "hidden_field");
 
                     hidden_ip.appendChild(file_len);
             } 
 
             else{
-                file_len[0].setAttribute("value", audioLength);
+                file_len[0].setAttribute("value", modelName);
             }
           
 
