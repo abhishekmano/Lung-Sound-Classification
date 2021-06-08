@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='circle.css') }}">
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,75 +11,151 @@
 </head>
 <body>
     
-    <div id="audio-spectrum"></div>
+    <div id="audio-spectrum" style="margin: 30px;"></div>
 
-    <input type="button" id="btn-play" value="Play" disabled="disabled"/>
-    <input type="button" id="btn-pause" value="Pause" disabled="disabled"/>
-    <input type="button" id="btn-stop" value="Stop" disabled="disabled"/>
+    <div class="buttons">
+
+        <button class="control" id="btn-play" onclick="controlFucntion(1)" disabled>Play</button>
+        <button class="control" id="btn-pause" onclick="controlFucntion(0)" disabled>Pause</button>
+        <button class="control" id="btn-stop" onclick="controlFucntion(-1)" disabled>Stop</button>
+
+    </div>
+
+
+    <p style="text-align: center;">Prediction Results</p>
+    <div class="flex-wrapper">
+        <div class="single-chart">
+          <svg viewBox="0 0 36 36" class="circular-chart orange">
+            <path class="circle-bg"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path class="circle"
+              stroke-dasharray="{{per_val}}, 100"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text x="18" y="20.35" class="percentage">{{ per_val }}%</text>
+          </svg>
+
+          <p style="text-align: center; font-family: Arial, Helvetica, sans-serif;">Normal</p>
+
+        </div>
+        
+        <!-- <div class="single-chart">
+          <svg viewBox="0 0 36 36" class="circular-chart green">
+            <path class="circle-bg"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path class="circle"
+              stroke-dasharray="60, 100"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text x="18" y="20.35" class="percentage">60%</text>
+          </svg>
+        </div>
+      
+        <div class="single-chart">
+          <svg viewBox="0 0 36 36" class="circular-chart blue">
+            <path class="circle-bg"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path class="circle"
+              stroke-dasharray="90, 100"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text x="18" y="20.35" class="percentage">90%</text>
+          </svg>
+        </div> -->
+    
+
+    <!-- <div class="percentage" style="display: -webkit-box; padding: 0% 30% 0% 30% ">
+
+        <div class="c100 p33 center" id="normal">
+            <span style="font-family: monospace">{{ per_val }}</span>
+            <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+        </div>
+        <div class="c100 p66 center" >
+            <span style="font-family: monospace">66%</span>
+            <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+        </div>-->
+    </div> 
+
+    <div id="back" class="buttons">
+        <form method="back" style="padding-top: 20px;">
+            <button class="goback" type = "submit">Try another Audio </button>
+        </form>
+    </div>
+
 
     <script src="https://unpkg.com/wavesurfer.js"></script>
-
     <script>
 
-        var file = '{{ filename }}';
+        var per_val = '{{per_val}}';
 
-        var buttons = {
-            play: document.getElementById("btn-play"),
-            pause: document.getElementById("btn-pause"),
-            stop: document.getElementById("btn-stop")
-        };
-        var result ='{{ result }}';
-        console.log(result)
+        console.log(per_val);
 
-
-        //instance of wavesurfer with its configuration
+        // let normal_per = document.getElementById("normal");
+        // normal_per.setAttribute("style", "--radius : " + per_val + "deg;");
 
         var Spectrum = WaveSurfer.create({
             container: '#audio-spectrum',
             progressColor : "#03a9f4"
         });
 
-        //handling play button
-        buttons.play.addEventListener("click", function(){
-            Spectrum.play();
+        var file = '{{ filename }}';
+        console.log(file);
 
-            buttons.play.disabled = true;
-            buttons.stop.disabled = false;
-            buttons.pause.disabled = false;
-        }, false);
+        let play = document.getElementById("btn-play");
+        let pause = document.getElementById("btn-pause");
+        let stop = document.getElementById("btn-stop");
+      
 
-        buttons.pause.addEventListener("click", function(){
-            Spectrum.pause();
+        function controlFucntion( val){
+            if(val == 1){
+                Spectrum.play();
 
-            buttons.play.disabled = false;
-            buttons.pause.disabled = true;
-        }, false);
+                play.disabled = true;
+                pause.disabled = false;
+                stop.disabled = false;
+            } 
+            else if ( val == 0){
+                Spectrum.pause();
 
-        buttons.stop.addEventListener("click", function(){
-            Spectrum.stop();
+                play.disabled = false;
+                pause.disabled = true;
+                stop.disabled = false;
+            }
 
-            buttons.play.disabled = false;
-            buttons.stop.disabled = true;
-            buttons.pause.disabled = true;
-        }, false);
-    
-        //adding listener to enable play button
+            else {
+                Spectrum.stop();
+
+                play.disabled = false;
+                pause.disabled = false;
+                stop.disabled = true;
+            }
+
+        }
 
         Spectrum.on('ready', function(){
-            buttons.play.disabled = false;
+            play.disabled = false;
         });
 
         Spectrum.load('../static/uploads/' + file );
 
+        //percentage circle code:
+
 </script>
-
-
-<div style="padding-top: 20px">
-    <form method="back">
-
-        <input type = "submit" value="Back"/>
-    </form>
-</div>
 
 </body>
 </html>
