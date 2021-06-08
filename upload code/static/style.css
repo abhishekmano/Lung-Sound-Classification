@@ -35,7 +35,7 @@ h1{
     margin-top: 1rem;
   }
 
-.button{
+.button {
     cursor: pointer;
     margin-left: 40px;
     border: none;
@@ -85,16 +85,111 @@ h1{
   
   /* Change background color of buttons on hover */
   .tab button:hover {
+      background-color: #bcffd5;
       color: #4caf72;
       border-color: #4caf72 ;
   }
   
   /* Create an active/current tablink class */
   .tab button.active {
+    background-color: #bcffd5;
     color: #4caf72;
-    border-color: #4caf72 ;
+    border: 2px solid #4caf72;
   }
 
   .upload-tab{
     margin-top: 20px;
   }
+
+
+  .buttons{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+    padding: 10px;
+  }
+  .control{
+
+    background-color:#4caf72;
+    border : none;
+    color : white;
+    padding: 15px;
+    margin-right: 10px;
+    border-radius: 100px;
+    cursor: pointer;
+  }
+
+.goback{
+    background-color: white;
+    border : 2px solid #4caf72;
+    color : #4caf72;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 100px;
+    padding: 15px;
+}
+
+#back{
+  left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    bottom: 20%;    
+}
+
+.flex-wrapper {
+  justify-content: center;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.single-chart {
+  margin: 10px;
+  width: 10%;
+  justify-content: space-around ;
+}
+
+.circular-chart {
+  display: block;
+  margin: 10px auto;
+  max-width: 80%;
+  max-height: 250px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.circular-chart.orange .circle {
+  stroke: #4caf72;
+}
+
+.circular-chart.green .circle {
+  stroke: #4CC790;
+}
+
+.circular-chart.blue .circle {
+  stroke: #3c9ee5;
+}
+
+.percentage {
+  fill: #666;
+  font-family: sans-serif;
+  font-size: 0.5em;
+  text-anchor: middle;
+}
+
