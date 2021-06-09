@@ -170,16 +170,16 @@ h1 {
   }
 }
 
-.circular-chart.orange .circle {
-  stroke: #4caf72;
+.circular-chart.blue .circle {
+  stroke: #66defc;
 }
 
 .circular-chart.green .circle {
-  stroke: #4cc790;
+  stroke: #4caf72;
 }
 
-.circular-chart.blue .circle {
-  stroke: #3c9ee5;
+.circular-chart.red .circle {
+  stroke: #ff6b77;
 }
 
 .percentage {

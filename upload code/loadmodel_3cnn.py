@@ -93,7 +93,8 @@ def loadmodel_3cnn(filename):
             return "Very High"
 
     def predict_out():
-        model_path = 'savedmodels/cnn_3class.pt'
+        #model_path = 'savedmodels/cnn_3class.pt'
+        model_path = 'savedmodels/best_model_cnn_3class.pt'
         audio_cnn = NetM3()
         audio_cnn.load_state_dict(torch.load(
             model_path, map_location=torch.device('cpu')))
