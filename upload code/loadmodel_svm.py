@@ -124,7 +124,7 @@ def loadmodel_svm(filename):
 
         z_dim = 64
         encoder_path = 'savedmodels/autoencoder_state.pt'
-        svm_path = 'savedmodels/best_train_svm_2class.sav'
+        svm_path = 'savedmodels/best_test_svm_afterencoding.sav'
         encoder = Autoencoder(z_dim)
 
         # encoder = torch.load(encoder_path, map_location=torch.device('cpu'))
@@ -165,10 +165,19 @@ def loadmodel_svm(filename):
             loss = loss.tolist()
             # print(loss)
             full_feature = z + [loss]
-            print(len(full_feature))
+            # print(len(full_feature))
 
             pred = clf.predict([full_feature])
+            scores = clf.decision_function([full_feature]).ravel() * (-1)
+            print(scores)
             print(pred)
+            prediction = ''
+            if(pred[0] == -1):
+                prediction = 'Anomaly'
+            else:
+                prediction = 'Normal'
+
+            return prediction, scores[0]
 
             # output = audio_cnn(audio_tensor)  # [1,1,2]
             # output = output.permute(1, 0, 2)[0]  # [1,2]
@@ -184,22 +193,22 @@ def loadmodel_svm(filename):
             # pred = output.max(1, keepdim=True)[1]
             # pred = pred.squeeze(0).squeeze(0).item()
 
-            x_group = ["Abnormal", "Normal"]
-            x = x_group[pred]
-            y = consistency(res[0][pred])
-            z = int(res[0][pred].item()*100)
+            # x_group = ["Abnormal", "Normal"]
+            # x = x_group[pred]
+            # y = consistency(res[0][pred])
+            # z = int(res[0][pred].item()*100)
             #print("predicted:", pred)
 
             # return x, y, z
 
-    predict_out()
+    x, y = predict_out()
     # x, y, z = predict_out()
     # print(x, y, z)
-    # return x, y, z
+    return x, y
 
 
-print(sklearn.__version__)
-loadmodel_svm("crack_1.wav")
+# print(sklearn.__version__)
+# loadmodel_svm("crack_1.wav")
 # for running only comment out when on web
 # loadmodel("crack_1.wav")
 # loadmodel("crack_2.wav")

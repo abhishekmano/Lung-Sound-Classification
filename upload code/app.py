@@ -5,6 +5,7 @@ from loadmodel import loadmodel
 from loadmodel_3cnn import loadmodel_3cnn
 from loadmodel_2gan import loadmodel_2gan
 from loadmodel_3gan import loadmodel_3gan
+from loadmodel_svm import loadmodel_svm
 
 from flask import Flask, render_template, request
 from flask.wrappers import Response
@@ -88,7 +89,7 @@ def upload_file():
             prediction = result[0]
             confidence = result[1]
             return render_template('uploaded.html', filename=filename, per_val=per_val, prediction=prediction, confidence=confidence)
-        else:
+        elif(model_name == 'GAN3'):
             result = loadmodel_3gan(filename)  # run loadmodel.py
             print(result)   # Crack,Normal Wheeze , Very high , Percentage
 
@@ -99,6 +100,12 @@ def upload_file():
             wheeze = result[2][2]
 
             return render_template('uploaded_cnn.html', filename=filename, crack=crack, normal=normal, wheeze=wheeze, prediction=prediction, confidence=confidence)
+        else:
+            result = loadmodel_svm(filename)
+            prediction = result[0]
+            confidence = result[1]
+            per_val = 100
+            return render_template('uploaded.html', filename=filename, per_val=per_val, prediction=prediction, confidence=confidence)
 
 
 @app.route('/', methods=["back"])
